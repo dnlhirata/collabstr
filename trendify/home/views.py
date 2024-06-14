@@ -1,9 +1,5 @@
-from typing import Any
-from django.http import HttpRequest
-from django.http.response import HttpResponse as HttpResponse
-from django.views.generic import ListView
-
 from contents.models import Content
+from django.views.generic import ListView
 
 
 class IndexView(ListView):
@@ -17,7 +13,7 @@ class IndexView(ListView):
         qs = Content.objects.all().select_related('creator')
         if self.platform:
             qs = qs.filter(creator__platform=self.platform)
-        
+
         return qs[:30]
 
     def get_template_names(self) -> list[str]:
@@ -25,5 +21,5 @@ class IndexView(ListView):
 
         if self.platform is not None:
             template_names = ['home/content_list.html']
-        
+
         return template_names
