@@ -1,0 +1,26 @@
+{% load humanize %}
+
+<div class="item-list">
+    {% for obj in object_list %}
+        <div class="item-card">
+            <div class="item-view">
+                {% if obj.content_type == 'image'%}
+                    <img class="item-media" src="{{ obj.url }}">
+                {% elif obj.content_type == 'video'%}
+                    <video class="item-media" controls>
+                        <source src="{{ obj.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% endif %}
+            </div>
+            <div class="item-info">
+                <div class="creator-info">
+                    <span>{{ obj.creator.name}}</span>
+                    <span>{{ obj.creator.rating|floatformat:2|intcomma }}</span>
+                </div>
+                <div class="platform-info">{{ obj.creator.platform }}</div>
+            </div>
+            <a class="btn item-download-btn" href="{{ obj.url }}" download>Download</a>
+        </div>
+    {% endfor %}
+</div>

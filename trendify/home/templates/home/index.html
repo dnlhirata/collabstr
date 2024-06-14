@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -56,26 +57,32 @@
             </div>
         </div>
         <div id="content">
-            <div class="item-list">
-                {% for obj in object_list %}
-                    <div class="item-card">
-                        <div class="item-view">
-                            {% if obj.content_type == 'image'%}
-                                <img src="{{ obj.url }}">
-                            {% elif obj.content_type == 'video'%}
-                                <video controls>
-                                    <source src="{{ obj.url }}" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
-                            {% endif %}
-                        </div>
-                        <button class="item-download-btn">Download</button>
-                    </div>
-                {% endfor %}
+            <div class="platform-filters">
+                <button class="btn platform-filter" value="">All</button>
+                <button class="btn platform-filter" value="Instagram">Instagram</button>
+                <button class="btn platform-filter" value="TikTok">TikTok</button>
+                <button class="btn platform-filter" value="User Generated Content">User Generated Content</button>
+            </div>
+            <div id="content-item-list">
+                {% include 'home/content_list.html' %}
             </div>
         </div>
     </body>
     <script>
-        // ***** put javascript/jquery/ajax here ******
+        $(document).ready(
+            $('.platform-filter').click(function(){
+                var platform = $(this).val();
+                $.ajax({
+                    url: '{% url "home.index" %}',
+                    type: 'GET',
+                    data: {
+                        platform: platform
+                    },
+                    success: function(data){
+                        $('#content-item-list').html(data);
+                    }
+                });
+            })
+        );
     </script>
 </html>
